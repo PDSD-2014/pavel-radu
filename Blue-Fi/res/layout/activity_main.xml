@@ -1,0 +1,135 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity" >
+
+	<LinearLayout
+	    android:id="@+id/please_pair_layout"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+		android:orientation="vertical"
+	    android:visibility="gone"
+	    tools:context=".MainActivity" >
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:gravity="center"
+	        android:text="@string/please_pair"
+	        android:textColor="#469"
+	        android:textSize="18sp" />
+	    <LinearLayout
+		    android:id="@+id/please_pair_layout_buttons"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+			android:orientation="horizontal"
+		    android:visibility="visible"
+		    tools:context=".MainActivity" >
+		    <Button
+	        	android:layout_width="0dp"
+	        	android:layout_height="match_parent"
+	        	android:layout_weight=".50"
+		        android:id="@+id/bluetooth_pair_button"
+		        android:text="@string/pair_with_bluetooth"
+	       		android:textColor="#469"
+	        	android:textSize="16sp"
+		        android:onClick="pairWithBluetooth">
+		    </Button>
+		    <Button
+	        	android:layout_width="0dp"
+	        	android:layout_height="match_parent"
+	        	android:layout_weight=".50"
+		        android:id="@+id/wifi_pair_button"
+		        android:text="@string/pair_with_wifi"
+	       		android:textColor="#469"
+	        	android:textSize="16sp"
+		        android:onClick="pairWithWifi">
+		    </Button>
+		</LinearLayout>
+	</LinearLayout>
+
+	<LinearLayout
+	    android:id="@+id/after_first_pair_layout"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+		android:orientation="vertical"
+	    android:visibility="gone"
+	    tools:context=".MainActivity" >
+
+		<LinearLayout
+		    android:id="@+id/paired_device1"
+		    android:layout_width="match_parent"
+		    android:layout_height="50dp"
+		    android:orientation="horizontal"
+	    	android:visibility="gone"
+		    tools:context=".MainActivity" >
+			    <TextView
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight=".60"
+			        android:gravity="center"
+			        android:text="@string/paired_device1_name"
+			        android:textColor="#469"
+			        android:textSize="20sp"
+			        android:onClick="expand" />
+			    <ImageView
+		    		android:id="@+id/paired_device1_bluetooth"
+			        android:contentDescription="@string/bluetooth_logo"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight=".20"
+			        android:gravity="right"
+			        android:src="@drawable/bluetooth" 
+			        android:onClick="goToBluetoothActivity" />
+			    <ImageView
+		    		android:id="@+id/paired_device1_wifi"
+			        android:contentDescription="@string/bluetooth_logo"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight=".20"
+			        android:gravity="right"
+			        android:src="@drawable/wifi"
+			        android:onClick="goToWifiActivity" />
+		</LinearLayout>
+		<LinearLayout
+		    android:id="@+id/paired_device2"
+		    android:layout_width="match_parent"
+		    android:layout_height="50dp"
+		    android:orientation="horizontal"
+	    	android:visibility="gone"
+		    tools:context=".MainActivity" >
+			    <TextView
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight=".60"
+			        android:gravity="center"
+			        android:text="@string/paired_device2_name"
+			        android:textColor="#469"
+			        android:textSize="20sp"
+			        android:onClick="expand" />
+			    <ImageView
+		    		android:id="@+id/paired_device2_bluetooth"
+			        android:contentDescription="@string/bluetooth_logo"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight=".20"
+			        android:gravity="right"
+			        android:src="@drawable/bluetooth" 
+			        android:onClick="goToBluetoothActivity" />
+			    <ImageView
+		    		android:id="@+id/paired_device2_wifi"
+			        android:contentDescription="@string/bluetooth_logo"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight=".20"
+			        android:gravity="right"
+			        android:src="@drawable/wifi"
+			        android:onClick="goToWifiActivity" />
+		</LinearLayout>
+
+	</LinearLayout>
+</LinearLayout>
+
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Blue-Fi</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="please_pair">You might want to pair with some other device.</string>
+    <string name="bluetooth_logo">Bluetooth</string>
+    <string name="wifi_logo">Wi-Fi</string>
+    <string name="paired_device1_name">Paired Device 1</string>
+    <string name="paired_device2_name">Paired Device 2</string>
+    <string name="title_activity_bluetooth">Bluetooth Devices</string>
+    <string name="title_activity_wifi">Wi-Fi Connection</string>
+    <string name="back_button_conntent_description">Go back!</string>
+    <string name="pair_with_bluetooth">Pair using Bluetooth</string>
+    <string name="pair_with_wifi">Pair using Wi-Fi</string>
+    <string name="title_activity_bluetooth_pair">Pair using Bluetooth</string>
+    <string name="title_activity_wifi_pair">Pair using Wi-Fi</string>
+
+</resources>
