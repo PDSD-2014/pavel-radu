@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="horizontal" >
+    
+    <Button
+        android:id="@+id/bluetooth_pair_button"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".50"
+        android:onClick="pairWithBluetooth"
+        android:text="@string/pair_with_bluetooth"
+        android:textColor="#469"
+        android:textSize="16sp" />
+    <Button
+        android:id="@+id/wifi_pair_button"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".50"
+        android:onClick="pairWithWifi"
+        android:text="@string/pair_with_wifi"
+        android:textColor="#469"
+        android:textSize="16sp" />
+
+</LinearLayout>

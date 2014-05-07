@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.pdsd.blue_fi"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="16" />
+        android:minSdkVersion="5"
+        android:targetSdkVersion="16"
+        tools:ignore="OldTargetApi" />
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -14,6 +16,11 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature
+        android:name="android.hardware.wifi.direct"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -30,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.pdsd.blue_fi.BluetoothActivity"
+            android:name="com.pdsd.blue_fi.DeviceActivity"
             android:label="@string/title_activity_bluetooth" >
         </activity>
         <activity
@@ -44,6 +51,22 @@
         <activity
             android:name="com.pdsd.blue_fi.WifiPairActivity"
             android:label="@string/title_activity_wifi_pair" >
+        </activity>
+        <activity
+            android:name="com.pdsd.blue_fi.NewDevices"
+            android:label="@string/title_activity_new_devices" >
+        </activity>
+        <activity
+            android:name="com.pdsd.blue_fi.MessageActivity"
+            android:label="@string/title_activity_message" >
+        </activity>
+        <activity
+            android:name="com.pdsd.blue_fi.CallActivity"
+            android:label="@string/title_activity_call" >
+        </activity>
+        <activity
+            android:name="com.pdsd.blue_fi.FileShareActivity"
+            android:label="@string/title_activity_file_share" >
         </activity>
     </application>
 

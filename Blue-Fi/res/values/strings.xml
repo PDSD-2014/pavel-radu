@@ -16,5 +16,29 @@
     <string name="pair_with_wifi">Pair using Wi-Fi</string>
     <string name="title_activity_bluetooth_pair">Pair using Bluetooth</string>
     <string name="title_activity_wifi_pair">Pair using Wi-Fi</string>
+    <string name="bluetooth_not_supported">Device does not support Bluetooth.</string>
+    <string name="bluetooth_supported">Bluetooth is supported. Yay!</string>
+    <string name="wifi_not_supported">Device does not support WiFi.</string>
+    <string name="scan_devices">Scan Devices</string>
+    <string name="logoContentDescription">Logo</string>
+    <string name="select_device">select_device</string>
+    <string name="none_paired">No device is paired.</string>
+    <string name="none_found">No device was found.</string>
+    <string name="scanning">scanning</string>
+    <string name="title_activity_new_devices">NewDevices</string>
+    <string name="discovery">Discovering new devices...</string>
+    <string name="wifi_peer_list_changed">The peer list has changed!  We should probably do something about that.</string>
+    <string name="wifi_connection_state_changed">Connection state changed!  We should probably do something about that.</string>
+    <string name="wifi_this_device_changed">This device changed... Device fragment...</string>
+    <string name="wifi_p2p_enabled">WiFi P2P is enabled.</string>
+    <string name="wifi_p2p_disabled">WiFi P2P is disabled.</string>
+    <string name="send_a_message">Send a message!</string>
+    <string name="give_a_call">  Give a call!</string>
+    <string name="send_a_file">  Send a file!</string>
+    <string name="title_activity_message">MessageActivity</string>
+    <string name="title_activity_call">CallActivity</string>
+    <string name="title_activity_file_share">FileShareActivity</string>
+    <string name="error">ERROR: MESSAGE NOT AVAILABLE</string>
+    <string name="discovery_finished">Bluetooth discovery has finished.</string>
 
 </resources>

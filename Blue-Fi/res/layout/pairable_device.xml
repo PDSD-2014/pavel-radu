@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/paired_device1"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+   	android:visibility="gone" >
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight=".60"
+	        android:gravity="center"
+	        android:textColor="#469"
+	        android:textSize="20sp"
+	        android:onClick="expand" />
+	    <ImageView
+    		android:id="@+id/paired_device_bluetooth"
+	        android:contentDescription="@string/bluetooth_logo"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight=".20"
+	        android:gravity="right"
+	        android:src="@drawable/bluetooth" 
+	        android:onClick="goToBluetoothActivity" />
+	    <ImageView
+    		android:id="@+id/paired_device_wifi"
+	        android:contentDescription="@string/bluetooth_logo"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight=".20"
+	        android:gravity="right"
+	        android:src="@drawable/wifi"
+	        android:onClick="goToWifiActivity" />
+</LinearLayout>
