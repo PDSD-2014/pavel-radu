@@ -1,5 +1,6 @@
 package com.pdsd.blue_fi;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
@@ -9,17 +10,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+@SuppressLint("NewApi")
 public class CallActivity extends Activity {
 
 	// Constants.
-	public final static String GO_TO_CALL_ACTIVITY = "com.pdsd.blue_fi.GO_TO_CALL_ACTIVITY";
+    public static String DEVICE_ADDRESS = "com.pdsd.blue_fi.device_address";
 
 	// Global variables.
 	SharedPreferences preferences;
 	Bundle extras;
-	String ID;
+	String address;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +32,8 @@ public class CallActivity extends Activity {
 		}
 		extras = getIntent().getExtras();
 		if (extras != null) {
-		    ID = extras.getString( GO_TO_CALL_ACTIVITY );
-			TextView t = (TextView)findViewById( R.id.call_activity_title );
-			t.setText( ID );
+		    address = extras.getString( DEVICE_ADDRESS );
+			setTitle( address );
 		}
 	}
 
@@ -72,6 +72,14 @@ public class CallActivity extends Activity {
 					false);
 			return rootView;
 		}
+	}
+	
+	public void answer( View v ){
+		
+	}
+	
+	public void decline( View v ){
+		
 	}
 
 }

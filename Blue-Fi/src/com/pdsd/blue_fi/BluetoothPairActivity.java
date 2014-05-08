@@ -39,7 +39,6 @@ public class BluetoothPairActivity extends Activity {
     ListView pairedListView;
 	
 	// Constants.
-	public final static String GO_TO_BLUETOOTH_ACTIVITY = "com.pdsd.blue_fi.bluetoothID";
     public static String DEVICE_ADDRESS = "com.pdsd.blue_fi.device_address";
 
 	@Override
@@ -86,8 +85,8 @@ public class BluetoothPairActivity extends Activity {
 
         // Find and set up the ListView for paired devices
         pairedListView = (ListView)findViewById(R.id.paired_devices);
-        pairedListView.setAdapter(pairedDevicesAdapter);
-        pairedListView.setOnItemClickListener(mDeviceClickListener);
+        pairedListView.setAdapter( pairedDevicesAdapter );
+        pairedListView.setOnItemClickListener( deviceClickListener );
   
         // Register for broadcasts when a device is discovered
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -140,7 +139,6 @@ public class BluetoothPairActivity extends Activity {
 
         // Indicate scanning in the title
         setProgressBarIndeterminateVisibility(true);
-		Toast.makeText( getApplicationContext(), R.string.discovery, Toast.LENGTH_SHORT ).show();
 
         // Turn on sub-title for new devices
         //findViewById(R.id.title_new_devices).setVisibility(View.VISIBLE);
@@ -152,6 +150,7 @@ public class BluetoothPairActivity extends Activity {
 
         // Request discover from BluetoothAdapter
         bluetoothAdapter.startDiscovery();
+		Toast.makeText( getApplicationContext(), R.string.discovery, Toast.LENGTH_SHORT ).show();
         Log.d( TAG, "doDiscovery()" );
     }
 	
@@ -163,7 +162,7 @@ public class BluetoothPairActivity extends Activity {
 	}
 
     // The on-click listener for all devices in the ListViews
-    private OnItemClickListener mDeviceClickListener = new OnItemClickListener() {
+    private OnItemClickListener deviceClickListener = new OnItemClickListener() {
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
             // Cancel discovery because it's costly and we're about to connect
         	bluetoothAdapter.cancelDiscovery();
@@ -200,11 +199,12 @@ public class BluetoothPairActivity extends Activity {
                 }
             // When discovery is finished, change the Activity title
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-        		Toast.makeText( getApplicationContext(), R.string.discovery_finished, Toast.LENGTH_SHORT ).show();
                 if( pairedDevicesAdapter.getCount() <= pairedDevices.size() ){
                 	String noDevices = getResources().getText( R.string.none_found ).toString();
                 	pairedDevicesAdapter.add( noDevices );
                 }
+        		pairedDevicesAdapter.notifyDataSetChanged();
+        		Toast.makeText( getApplicationContext(), R.string.discovery_finished, Toast.LENGTH_SHORT ).show();
             }
             Log.d( TAG, "BroadcastReceiver.onReceive()" );
         }

@@ -38,11 +38,7 @@
         </activity>
         <activity
             android:name="com.pdsd.blue_fi.DeviceActivity"
-            android:label="@string/title_activity_bluetooth" >
-        </activity>
-        <activity
-            android:name="com.pdsd.blue_fi.WifiActivity"
-            android:label="@string/title_activity_wifi" >
+            android:label="@string/title_activity_device" >
         </activity>
         <activity
             android:name="com.pdsd.blue_fi.BluetoothPairActivity"

@@ -3,13 +3,57 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context="com.pdsd.blue_fi.CallActivity"
     tools:ignore="MergeRootFrame" >
 
+    <ImageView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:gravity="center"
+        android:src="@drawable/unknown_avatar_big"
+        android:contentDescription="@string/avatar"/>
+    
     <TextView
-        android:id = "@+id/call_activity_title"
+        android:id = "@+id/call_id"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+	    android:gravity="center"
+	    android:hint="@string/call_id" />
+    
+    <TextView
+        android:id = "@+id/call_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+	    android:gravity="center"
+	    android:hint="@string/calling_or_answer" />
+    
+    <LinearLayout
+        android:orientation="horizontal"
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+	    android:gravity="center">
+	
+	    <ImageView
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:layout_weight=".5"
+	        android:src="@drawable/yes"
+	        android:gravity="center"
+	        android:contentDescription="@string/yes"
+	        android:onClick="answer"/>
+		
+	    <ImageView
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:layout_weight=".5"
+	        android:src="@drawable/no"
+	        android:gravity="center"
+	        android:contentDescription="@string/no"
+	        android:onClick="decline"/>
 
+	</LinearLayout>
+	    
 </LinearLayout>
 

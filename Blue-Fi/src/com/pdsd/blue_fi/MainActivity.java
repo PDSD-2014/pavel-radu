@@ -2,8 +2,6 @@ package com.pdsd.blue_fi;
 
 import java.util.Set;
 
-import com.pdsd.blue_fi.R;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;

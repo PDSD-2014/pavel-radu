@@ -234,6 +234,7 @@ public class WifiPairActivity extends Activity{
 
     	String noDevices = getResources().getText( R.string.none_found ).toString();
     	pairedDevicesAdapter.add( noDevices );
+		pairedDevicesAdapter.notifyDataSetChanged();
 
     	Log.d( TAG, "doDiscovery()" );
     }

@@ -7,10 +7,6 @@
     <string name="please_pair">You might want to pair with some other device.</string>
     <string name="bluetooth_logo">Bluetooth</string>
     <string name="wifi_logo">Wi-Fi</string>
-    <string name="paired_device1_name">Paired Device 1</string>
-    <string name="paired_device2_name">Paired Device 2</string>
-    <string name="title_activity_bluetooth">Bluetooth Devices</string>
-    <string name="title_activity_wifi">Wi-Fi Connection</string>
     <string name="back_button_conntent_description">Go back!</string>
     <string name="pair_with_bluetooth">Pair using Bluetooth</string>
     <string name="pair_with_wifi">Pair using Wi-Fi</string>
@@ -21,10 +17,8 @@
     <string name="wifi_not_supported">Device does not support WiFi.</string>
     <string name="scan_devices">Scan Devices</string>
     <string name="logoContentDescription">Logo</string>
-    <string name="select_device">select_device</string>
     <string name="none_paired">No device is paired.</string>
     <string name="none_found">No device was found.</string>
-    <string name="scanning">scanning</string>
     <string name="title_activity_new_devices">NewDevices</string>
     <string name="discovery">Discovering new devices...</string>
     <string name="wifi_peer_list_changed">The peer list has changed!  We should probably do something about that.</string>
@@ -40,5 +34,32 @@
     <string name="title_activity_file_share">FileShareActivity</string>
     <string name="error">ERROR: MESSAGE NOT AVAILABLE</string>
     <string name="discovery_finished">Bluetooth discovery has finished.</string>
+    <string name="title_activity_device">Device</string>
+    <string name="avatar">Avatar</string>
+    <string name="yes">Yes button</string>
+    <string name="no">No button</string>
+    <string name="calling_or_answer">Calling or Answer</string>
+    <string name="call_id">Call ID</string>
+    <string name="browse">Browse</string>
+    <string name="send_file">Send file</string>
+
+    <!--  BluetoothChat -->
+    <string name="send">Send</string>
+    <string name="not_connected">You are not connected to a device</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
+    <string name="title_connecting">connecting...</string>
+    <string name="title_not_connected">not connected</string>
+
+    <!--  DeviceListActivity -->
+    <string name="scanning">scanning for devices...</string>
+    <string name="select_device">select a device to connect</string>
+    <string name="title_paired_devices">Paired Devices</string>
+    <string name="title_other_devices">Other Available Devices</string>
+    <string name="button_scan">Scan for devices</string>
+
+    <!-- Options Menu -->
+    <string name="secure_connect">Connect a device - Secure</string>
+    <string name="insecure_connect">Connect a device - Insecure</string>
+    <string name="discoverable">Make discoverable</string>
 
 </resources>
