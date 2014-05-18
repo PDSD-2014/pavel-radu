@@ -1,23 +1,11 @@
 package com.pdsd.blue_fi;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.net.NetworkInfo;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.net.wifi.WpsInfo;
-import android.net.wifi.p2p.WifiP2pConfig;
-import android.net.wifi.p2p.WifiP2pDevice;
-import android.net.wifi.p2p.WifiP2pDeviceList;
-import android.net.wifi.p2p.WifiP2pInfo;
-import android.net.wifi.p2p.WifiP2pManager;
-import android.net.wifi.p2p.WifiP2pManager.ActionListener;
-import android.net.wifi.p2p.WifiP2pManager.Channel;
-import android.net.wifi.p2p.WifiP2pManager.PeerListListener;
 import android.os.Bundle;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,65 +19,51 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.pdsd.blue_fi.PairedDevicesAdapter;
 
 //This is the Wi-Fi pairing activity.
 
-@SuppressLint("NewApi")
 public class WifiPairActivity extends Activity{
 
     // Debugging
-    private static final String TAG = "WifiPairActivity";
+    static final String TAG = "WifiPairActivity";
 
 	// Global variables.
-	SharedPreferences preferences;
-	Channel channel;
-	WifiP2pManager manager;
-	boolean isWifiP2pEnabled;
-	boolean p2p_unsupported;
+	boolean isWifiP2pEnabled, p2p_unsupported;
 	BroadcastReceiver broadcastReceiver;
-	WifiManager wifiManager;
 	IntentFilter intentFilter;
-	List<WifiP2pDevice> peers;
-    PairedDevicesAdapter pairedDevicesAdapter;
+	List<String> peers;
     ListView pairedListView;
-	
-	// Constants.
-	public final static String GO_TO_WIFI_ACTIVITY = "com.pdsd.blue_fi.wifiID";
-    public static String DEVICE_ADDRESS = "com.pdsd.blue_fi.device_address";
+    PairedDevicesAdapter pairedDevicesAdapter;
+	SharedPreferences preferences;
+	WifiManager wifiManager;
+	String address;
+	boolean emptyList;
+	///////////////
+	TextView mainText;
+    WifiManager mainWifi;
+    WifiReceiver receiverWifi;
+    List<ScanResult> wifiList;
+    StringBuilder sb = new StringBuilder();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        Log.d( TAG, "onCreate()" );
 		setContentView(R.layout.activity_wifi_pair);
 		intentFilter = new IntentFilter();
+		emptyList = true;
 		
 		// Global variables at app-level.
 		preferences = this.getSharedPreferences( "com.pdsd.blue_fi", Context.MODE_PRIVATE );
-		
-	    //  Indicates a change in the Wi-Fi P2P status.
-	    intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
 
-	    // Indicates a change in the list of available peers.
-	    intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-
-	    // Indicates the state of Wi-Fi P2P connectivity has changed.
-	    intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-
-	    // Indicates this device's details have changed.
-	    intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
-
-	    manager = (WifiP2pManager)getSystemService( Context.WIFI_P2P_SERVICE );
-	    channel = manager.initialize(this, getMainLooper(), null);
-	    isWifiP2pEnabled = false;
 	    Button scanButton = (Button)findViewById( R.id.wifi_scan_button );
 	    wifiManager = (WifiManager)this.getSystemService( Context.WIFI_SERVICE );
 	    wifiManager.setWifiEnabled( true );
-		p2p_unsupported = false;
-		peers = new ArrayList<WifiP2pDevice>();
+		peers = new ArrayList<String>();
         pairedDevicesAdapter = new PairedDevicesAdapter( this );
 
         // Find and set up the ListView for paired devices
@@ -101,34 +75,30 @@ public class WifiPairActivity extends Activity{
     	pairedDevicesAdapter.add( noDevices );
 
         pairedDevicesAdapter.add( null ); // This right here is a line break.
-
-	    scanButton.setOnClickListener( new OnClickListener() {
+        
+	    scanButton.setOnClickListener( new OnClickListener(){
             public void onClick( View v ){
-                doDiscovery();
+            	doDiscovery();
             }
         } );
 
-        Log.d( TAG, "onCreate()" );
 	}
     
-    /** register the BroadcastReceiver with the intent values to be matched */
     @Override
     public void onResume() {
+    	registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         super.onResume();
-        initiateBroadcastReceiver();
-        registerReceiver( broadcastReceiver, intentFilter );
-        Log.d( TAG, "onResume()" );
     }
 
     @Override
     public void onPause() {
+    	unregisterReceiver(receiverWifi);
         super.onPause();
-        unregisterReceiver( broadcastReceiver );
-        Log.d( TAG, "onPause()" );
     }
     
     private OnItemClickListener mDeviceClickListener = new OnItemClickListener() {
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
+            Log.d( TAG, "onItemClick()" );
             // Cancel discovery because it's costly and we're about to connect
         	//bluetoothAdapter.cancelDiscovery();
 
@@ -138,188 +108,132 @@ public class WifiPairActivity extends Activity{
 
             // Create the result Intent and include the MAC address
             Intent intent = new Intent();
-            intent.putExtra( DEVICE_ADDRESS, address );
+            intent.putExtra( MainActivity.DEVICE_ADDRESS, address );
 
             // Set result and finish this Activity
             setResult(Activity.RESULT_OK, intent);
             goToDeviceActivity( v );
-            Log.d( TAG, "onItemClick()" );
         }
     };
 
 	public void goToDeviceActivity( View view ){
-		Intent intent = new Intent( this, DeviceActivity.class );
-		intent.putExtra( DEVICE_ADDRESS, ((TextView)view).getText() );
-		startActivity( intent );
         Log.d( TAG, "goToDeviceActivity()" );
+		Intent intent = new Intent( this, DeviceActivity.class );
+		intent.putExtra( MainActivity.DEVICE_ADDRESS, ((TextView)view).getText() );
+		startActivity( intent );
 	}
 
     public void connect() {
-        // Picking the first device found on the network.
-        WifiP2pDevice device = (WifiP2pDevice)peers.get(0);
-
-        WifiP2pConfig config = new WifiP2pConfig();
-        config.deviceAddress = device.deviceAddress;
-        config.wps.setup = WpsInfo.PBC;
-
-        manager.connect( channel, config, new ActionListener() {
-
-            @Override
-            public void onSuccess() {
-                // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
-            }
-
-            @Override
-            public void onFailure(int reason) {
-    			Toast.makeText( getApplicationContext(), "Connection failed. Retry!", Toast.LENGTH_SHORT ).show();
-            }
-        });
         Log.d( TAG, "connect()" );
-    }
-    
-    public void onConnectionInfoAvailable(final WifiP2pInfo info) {
-
-        // InetAddress from WifiP2pInfo struct.
-        try {
-			InetAddress groupOwnerAddress = InetAddress.getByName( info.groupOwnerAddress.getHostAddress() );
-			Log.d( TAG, groupOwnerAddress.toString() );
-        } catch (UnknownHostException e) {
-            Log.d( TAG, "Unknown Host Exception");
-		}
-
-        // After the group negotiation, we can determine the group owner.
-        if (info.groupFormed && info.isGroupOwner) {
-            // Do whatever tasks are specific to the group owner.
-            // One common case is creating a server thread and accepting
-            // incoming connections.
-        } else if (info.groupFormed) {
-            // The other device acts as the client. In this case,
-            // you'll want to create a client thread that connects to the group
-            // owner.
-        }
-        Log.d( TAG, "onConnectionInfoAvailable()" );
+        // Picking the first device found on the network.
     }
 
     public void doDiscovery(){
-        manager.discoverPeers( channel, new WifiP2pManager.ActionListener() {
-
-	        @Override
-	        public void onSuccess() {
-	            // Code for when the discovery initiation is successful goes here.
-	            // No services have actually been discovered yet, so this method
-	            // can often be left blank.  Code for peer discovery goes in the
-	            // onReceive method, detailed below.
-	            Log.d( TAG, "WifiP2pManager.onSuccess()" );
-	        }
-
-	        @Override
-	        public void onFailure(int reasonCode) {
-	            // Code for when the discovery initiation fails goes here.
-	            // Alert the user that something went wrong.
-	        	String errorName;
-	        	if( reasonCode == WifiP2pManager.P2P_UNSUPPORTED ){
-	        		errorName = "P2P_UNSUPPORTED";
-	        		p2p_unsupported = true;
-	        	}
-	        	else if( reasonCode == WifiP2pManager.ERROR )
-	        		errorName = "ERROR";
-	        	else if( reasonCode == WifiP2pManager.BUSY )
-	        		errorName = "BUSY";
-	        	else
-	        		errorName = "Unknown Error";
-	            Log.d( TAG, "WifiP2pManager.onFailure(" + errorName + ")" );
-	        }
-
-        });
-
-    	String noDevices = getResources().getText( R.string.none_found ).toString();
-    	pairedDevicesAdapter.add( noDevices );
-		pairedDevicesAdapter.notifyDataSetChanged();
-
     	Log.d( TAG, "doDiscovery()" );
+        
+        Toast.makeText( this, "Scanning...", Toast.LENGTH_SHORT ).show();
+
+    	mainWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        receiverWifi = new WifiReceiver();
+        registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        mainWifi.startScan();
+
+        Toast.makeText( this, "Scan complete", Toast.LENGTH_SHORT ).show();
+
     }
     
-    private PeerListListener peerListListener = new PeerListListener() {
-        @Override
-        public void onPeersAvailable(WifiP2pDeviceList peerList) {
+    class WifiReceiver extends BroadcastReceiver {
+    	
+    	public String parse( String result ){
+    		Log.d( TAG, "parse( " + result + " )" );
+    		
+    		String string, aux;
+    		String[] parts;
+    		String[] parts2;
 
-            // Out with the old, in with the new.
-            peers.clear();
-            peers.addAll(peerList.getDeviceList());
+    		string = new String();
+    		aux = new String();
+    		parts = result.split( "," );
+    		
+    		// SSID
+    		aux = parts[0].split( ":" )[1];
+    		aux = aux.substring( 1, aux.length() );
+    		string += aux;
 
-            // If an AdapterView is backed by this data, notify it
-            // of the change.  For instance, if you have a ListView of available
-            // peers, trigger an update.
-            // TODO: ((WiFiPeerListAdapter) getListAdapter()).notifyDataSetChanged();
-            if (peers.size() == 0) {
-                Log.d( TAG, "No devices found");
-                return;
-            }
-            Log.d( TAG, "PeerListListener.onPeersAvailable()" );
-        }
-    };
-    
-    public void initiateBroadcastReceiver(){
-	    broadcastReceiver = new BroadcastReceiver(){
-	
-	        @Override
-	        public void onReceive(Context context, Intent intent) {
-	            String action = intent.getAction();
-	            if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
-	                // Determine if Wifi P2P mode is enabled or not, alert
-	                // the Activity.
-	                // Check to see if Wi-Fi is enabled and notify appropriate activity
-	                int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
-	                if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
-	                    isWifiP2pEnabled = true;
-	        			Toast.makeText( getApplicationContext(), R.string.wifi_p2p_enabled, Toast.LENGTH_SHORT ).show();
-	                } else {
-	                    isWifiP2pEnabled = false;
-	        			Toast.makeText( getApplicationContext(), R.string.wifi_p2p_disabled, Toast.LENGTH_SHORT ).show();
-	                }
-	            } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
-	
-	    			Toast.makeText( getApplicationContext(), R.string.wifi_peer_list_changed, Toast.LENGTH_SHORT ).show();
-	                // The peer list has changed!  We should probably do something about
-	                // that.
-	                // Call WifiP2pManager.requestPeers() to get a list of current peers
-	    			manager.requestPeers( channel, peerListListener );
-	
-	            } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
-	
-	    			Toast.makeText( getApplicationContext(), R.string.wifi_connection_state_changed, Toast.LENGTH_SHORT ).show();
+    		// BSSID
+    		parts2 = parts[1].split( ":" );
+    		string += "\n" + parts2[1].substring( 1, parts2[1].length() );
+    		string += ":" + parts2[2];
+    		string += ":" + parts2[3];
+    		string += ":" + parts2[4];
+    		string += ":" + parts2[5];
+    		string += ":" + parts2[6];
 
-	                if (manager == null) {
-	                    return;
-	                }
-
-	                NetworkInfo networkInfo = (NetworkInfo) intent
-	                        .getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
-
-	                if (networkInfo.isConnected()) {
-
-	                    // We are connected with the other device, request connection
-	                    // info to find group owner IP
-
-	                   //TODO: manager.requestConnectionInfo( channel, connectionListener);
-	                }
-	                // Connection state changed!  We should probably do something about
-	                // that.
-	                // Respond to new connection or disconnections
-	
-	            } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
-	                // Respond to this device's wifi state changing
-	    			Toast.makeText( getApplicationContext(), R.string.wifi_this_device_changed, Toast.LENGTH_SHORT ).show();
-	/*                DeviceListFragment fragment = (DeviceListFragment) activity.getFragmentManager()
-	                        .findFragmentById(R.id.frag_list);
-	                fragment.updateThisDevice((WifiP2pDevice) intent.getParcelableExtra(
-	                        WifiP2pManager.EXTRA_WIFI_P2P_DEVICE));*/
-	
+    		// Singal strength
+    		aux = parts[3].split( ":" )[1];
+    		aux = aux.substring( 1, aux.length() );
+    		string += "\nSignal strength: " + aux + "db";
+    		
+    		return string;
+    	}
+    	
+        public void onReceive(Context c, Intent intent) {
+        	if( emptyList ){
+	            wifiList = mainWifi.getScanResults();
+	            for(int i = 0; i < wifiList.size(); i++){
+	            	String entry = parse( wifiList.get( i ).toString() );
+	                pairedDevicesAdapter.add( Integer.valueOf( i + 1 ).toString() + ". " + entry );
+	                emptyList = false;
 	            }
-	            Log.d( TAG, "BroadcastReceiver.onReceive()" );
-	        }
+	        	pairedDevicesAdapter.notifyDataSetChanged();
+        	}
 
-	    };
+            if( emptyList ){
+    	    	String noDevices = getResources().getText( R.string.none_found ).toString();
+    	        if( pairedDevicesAdapter.getItem( pairedDevicesAdapter.getCount() - 1 ) == null || !pairedDevicesAdapter.getItem( pairedDevicesAdapter.getCount() - 1 ).equals( noDevices ) ){
+    	        	pairedDevicesAdapter.add( noDevices );
+    	        	pairedDevicesAdapter.notifyDataSetChanged();
+    	        }
+            }
+           // mainText.setText(sb);///aici o sa am toate datele retelelor descoperite
+            /////////
+            //String networkSSID = "test";//////do some tests
+            //String networkPass = "pass";
+
+           /* WifiConfiguration conf = new WifiConfiguration();
+            conf.SSID = "\"" + networkSSID + "\""; 
+            //aici tre' vazut de care retea e
+             //si tratat pe cazuri
+            //wep
+            conf.wepKeys[0] = "\"" + networkPass + "\""; 
+            conf.wepTxKeyIndex = 0;
+            conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+            conf.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40); 
+            
+            //wpa
+            conf.preSharedKey = "\""+ networkPass +"\"";
+            
+            //open net
+            conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+            
+            //add settings to manager
+            
+            mainWifi.addNetwork(conf);
+            
+            //enable so android can connect
+            List<WifiConfiguration> list = mainWifi.getConfiguredNetworks();
+            for( WifiConfiguration i : list ) {
+                if(i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
+                     mainWifi.disconnect();
+                     mainWifi.enableNetwork(i.networkId, true);
+                     mainWifi.reconnect();               
+
+                     break;
+                }           
+             }*/
+            
+        }
     }
     
 }
+

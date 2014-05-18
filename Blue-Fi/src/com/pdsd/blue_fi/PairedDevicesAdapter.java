@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 public class PairedDevicesAdapter extends BaseAdapter{
 	
+	// Debugging.
+    static final String TAG = "PairedDevicesAdapter";
+	
 	Activity context;
 	List<String> data;
 	
@@ -24,12 +27,12 @@ public class PairedDevicesAdapter extends BaseAdapter{
     public View getView( int position, View convertView, ViewGroup parent ){
 
 		// Declarations.
-		View customView;
-        String string;
         LayoutInflater layoutInflater;
+        String string;
+		View customView;
 
-        string = data.get( position );
         layoutInflater = (LayoutInflater)context.getLayoutInflater();
+        string = data.get( position );
         if( string == null ){
 	        customView = layoutInflater.inflate( R.layout.line_break, parent, false);
         	customView.setOnClickListener( null );
@@ -57,8 +60,8 @@ public class PairedDevicesAdapter extends BaseAdapter{
 	}
 
 	@Override
-	public Object getItem(int position) {
-		return data.indexOf( data.get( position ) );
+	public String getItem(int position) {
+		return data.get( position );
 	}
 
 	@Override

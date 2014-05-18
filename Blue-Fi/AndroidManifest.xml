@@ -17,6 +17,10 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <uses-feature
         android:name="android.hardware.wifi.direct"
@@ -63,6 +67,30 @@
         <activity
             android:name="com.pdsd.blue_fi.FileShareActivity"
             android:label="@string/title_activity_file_share" >
+        </activity>
+        <activity
+            android:name="com.pdsd.blue_fi.FileexplorerActivity"
+            >
+        </activity>
+        <activity
+            android:name="com.pdsd.blue_fi.FileArrayAdapter"
+           >
+        </activity>
+        <activity
+            android:name="com.pdsd.blue_fi.FileChooser"
+            >
+        </activity>
+        <activity
+            android:name="com.pdsd.blue_fi.Item"
+             >
+        </activity>
+        <activity
+            android:name="com.pdsd.blue_fi.FileSender"
+             >
+        </activity>
+        <activity
+            android:name="com.pdsd.blue_fi.SaveToSDCard"
+             >
         </activity>
     </application>
 

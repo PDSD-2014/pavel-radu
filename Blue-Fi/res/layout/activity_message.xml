@@ -5,25 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="MergeRootFrame" >
-
+    
     <ListView
         android:id="@+id/message_list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll" />
 
     <LinearLayout
+        android:id="@+id/inputArea"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
+        android:layout_alignParentBottom="true"
+        android:background="#f3f3f3" >
 
         <EditText android:id="@+id/edit_text_out"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".7"
             android:layout_gravity="bottom"
+            android:textAllCaps="true"
             android:inputType="text" />
         
         <Button android:id="@+id/button_send"

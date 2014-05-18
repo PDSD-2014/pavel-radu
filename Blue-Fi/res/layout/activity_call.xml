@@ -8,51 +8,130 @@
     tools:context="com.pdsd.blue_fi.CallActivity"
     tools:ignore="MergeRootFrame" >
 
-    <ImageView
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:gravity="center"
-        android:src="@drawable/unknown_avatar_big"
-        android:contentDescription="@string/avatar"/>
-    
-    <TextView
-        android:id = "@+id/call_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-	    android:gravity="center"
-	    android:hint="@string/call_id" />
-    
-    <TextView
-        android:id = "@+id/call_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-	    android:gravity="center"
-	    android:hint="@string/calling_or_answer" />
-    
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/answer_decline_layout"
     	android:layout_width="match_parent"
     	android:layout_height="match_parent"
-	    android:gravity="center">
-	
+    	android:orientation="vertical"
+    	android:visibility="gone"
+		android:gravity="center" >
+    
 	    <ImageView
-		    android:layout_width="0dp"
+		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:layout_weight=".5"
-	        android:src="@drawable/yes"
-	        android:gravity="center"
-	        android:contentDescription="@string/yes"
-	        android:onClick="answer"/>
+		    android:gravity="center"
+	        android:src="@drawable/unknown_avatar_big"
+	        android:contentDescription="@string/avatar"/>
+	    
+	    <TextView
+	        android:id = "@+id/call_id"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+		    android:gravity="center"
+		    android:hint="@string/call_id" />
+	    
+	    <TextView
+	        android:id = "@+id/call_state"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+		    android:gravity="center"
+		    android:hint="@string/calling_or_answer" />
+	    
+	    <LinearLayout
+	        android:orientation="horizontal"
+	    	android:layout_width="match_parent"
+	    	android:layout_height="match_parent"
+		    android:gravity="center">
 		
-	    <ImageView
-		    android:layout_width="0dp"
-		    android:layout_height="wrap_content"
-		    android:layout_weight=".5"
-	        android:src="@drawable/no"
-	        android:gravity="center"
-	        android:contentDescription="@string/no"
-	        android:onClick="decline"/>
+		    <ImageView
+			    android:layout_width="0dp"
+			    android:layout_height="wrap_content"
+			    android:layout_weight=".5"
+		        android:src="@drawable/yes"
+		        android:gravity="center"
+		        android:contentDescription="@string/yes"
+		        android:onClick="answer"/>
+			
+		    <ImageView
+			    android:layout_width="0dp"
+			    android:layout_height="wrap_content"
+			    android:layout_weight=".5"
+		        android:src="@drawable/no"
+		        android:gravity="center"
+		        android:contentDescription="@string/no"
+		        android:onClick="decline"/>
+	
+		</LinearLayout>
 
+	</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/call_screen_layout"
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:orientation="vertical"
+    	android:visibility="gone"
+		android:gravity="center" >
+    
+	    <ImageView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:gravity="center"
+	        android:src="@drawable/unknown_avatar_big"
+	        android:contentDescription="@string/avatar"/>
+	    
+	    <TextView
+	        android:id = "@+id/call_id2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+		    android:gravity="center"
+		    android:hint="@string/call_id" />
+	    
+	    <TextView
+	        android:id = "@+id/call_state2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+		    android:gravity="center"
+		    android:hint="@string/calling_or_answer" />
+	    
+	    <LinearLayout
+	        android:orientation="horizontal"
+	    	android:layout_width="match_parent"
+	    	android:layout_height="match_parent"
+		    android:gravity="center">
+		
+		    <ImageView
+		        android:id="@+id/call_button"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+		        android:src="@drawable/phone_big"
+		        android:gravity="center"
+		        android:contentDescription="@string/yes"
+		        android:onClick="call"
+		        android:visibility="gone"/>
+		
+		    <ImageView
+		        android:id="@+id/end_call_button"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+		        android:src="@drawable/no"
+		        android:gravity="center"
+		        android:contentDescription="@string/no"
+		        android:onClick="end_call"
+		        android:visibility="gone"/>
+		
+		    <ImageView
+		        android:id="@+id/end_calling_button"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+		        android:src="@drawable/no"
+		        android:gravity="center"
+		        android:contentDescription="@string/no"
+		        android:onClick="end_calling"
+		        android:visibility="gone"/>
+	
+		</LinearLayout>
+	
 	</LinearLayout>
 	    
 </LinearLayout>

@@ -2,16 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
-    android:orientation="horizontal">
+    android:orientation="vertical" >
 
     <TextView
+        android:id="@+id/left_message_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/unknown_avatar"
         android:text="@string/error"
         android:gravity="left"
         android:clickable="false"
-        android:textColor="#000"
+        android:textColor="#469"
         android:textSize="16sp" />
 
 </LinearLayout>

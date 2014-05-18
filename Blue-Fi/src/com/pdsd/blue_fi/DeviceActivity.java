@@ -8,23 +8,20 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.TextView;
 
 // This is the detailed Bluetooth activity of a certain device.
 
 public class DeviceActivity extends Activity {
 
     // Debugging
-    private static final String TAG = "BluetoothActivity";
-	
-	// Constants.
-    public static String DEVICE_ADDRESS = "com.pdsd.blue_fi.device_address";
+    static final String TAG = "DeviceActivity";
     
     public enum AddressType{
     	Bluetooth,
     	Wifi,
     	Unknown;
     	public static AddressType getAddressType( String address ){
+            Log.d( TAG, "AddressType.getAddressType()" );
     		if( address == null )
     			return AddressType.Unknown;
     		else if( address.contains( ":" ) )
@@ -40,10 +37,12 @@ public class DeviceActivity extends Activity {
 	SharedPreferences preferences;
 	Bundle extras;
 	String address;
+	String name;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState ){
 		super.onCreate(savedInstanceState);
+        Log.d( TAG, "onCreate()" );
 		setContentView(R.layout.activity_device);
 
 		// Global variables at app-level.
@@ -51,41 +50,36 @@ public class DeviceActivity extends Activity {
 
 		extras = getIntent().getExtras();
 		if (extras != null) {
-		    address = extras.getString( DEVICE_ADDRESS );
-			TextView t = (TextView)findViewById( R.id.device_title );
-			t.setText( address );
+		    name = extras.getString( MainActivity.DEVICE_NAME );
+		    address = extras.getString( MainActivity.DEVICE_ADDRESS );
+			setTitle( name );
+			Log.d( TAG, address );
 		}
 		
-        Log.d( TAG, "onCreate()" );
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.bluetooth, menu);
-        Log.d( TAG, "onCreateOptionsMenu()" );
-		return true;
 	}
 	
 	public void goToCallActivity( View view ){
-		Intent intent = new Intent( this, CallActivity.class );
-		intent.putExtra( DEVICE_ADDRESS, address );
-		startActivity( intent );
         Log.d( TAG, "goToCallActivity()" );
+		Intent intent = new Intent( this, CallActivity.class );
+		intent.putExtra( MainActivity.DEVICE_NAME, name );
+		intent.putExtra( MainActivity.DEVICE_ADDRESS, address );
+		startActivity( intent );
 	}
 
 	public void goToFileShareActivity( View view ){
-		Intent intent = new Intent( this, FileShareActivity.class );
-		intent.putExtra( DEVICE_ADDRESS, address );
-		startActivity( intent );
         Log.d( TAG, "goToFileShareActivity()" );
+		Intent intent = new Intent( this, FileexplorerActivity.class );
+		intent.putExtra( MainActivity.DEVICE_NAME, name );
+		intent.putExtra( MainActivity.DEVICE_ADDRESS, address );
+		startActivity( intent );
 	}
 
 	public void goToMessageActivity( View view ){
-		Intent intent = new Intent( this, MessageActivity.class );
-		intent.putExtra( DEVICE_ADDRESS, address );
-		startActivity( intent );
         Log.d( TAG, "goToMessageActivity()" );
+		Intent intent = new Intent( this, MessageActivity.class );
+		intent.putExtra( MainActivity.DEVICE_NAME, name );
+		intent.putExtra( MainActivity.DEVICE_ADDRESS, address );
+		startActivity( intent );
 	}
 	
 }

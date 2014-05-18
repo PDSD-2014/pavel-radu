@@ -26,9 +26,9 @@
     <string name="wifi_this_device_changed">This device changed... Device fragment...</string>
     <string name="wifi_p2p_enabled">WiFi P2P is enabled.</string>
     <string name="wifi_p2p_disabled">WiFi P2P is disabled.</string>
-    <string name="send_a_message">Send a message!</string>
-    <string name="give_a_call">  Give a call!</string>
-    <string name="send_a_file">  Send a file!</string>
+    <string name="send_a_message">Messaging</string>
+    <string name="give_a_call">Call</string>
+    <string name="send_a_file">File Sharing</string>
     <string name="title_activity_message">MessageActivity</string>
     <string name="title_activity_call">CallActivity</string>
     <string name="title_activity_file_share">FileShareActivity</string>
@@ -40,8 +40,11 @@
     <string name="no">No button</string>
     <string name="calling_or_answer">Calling or Answer</string>
     <string name="call_id">Call ID</string>
-    <string name="browse">Browse</string>
+    <string name="browse">Browse...</string>
+    <string name="save">Save</string>
     <string name="send_file">Send file</string>
+    <string name="title_connected_to">Connected to</string>
+    <string name="Get_File_Name_From_SDCard">Get File Name From SDCard</string>
 
     <!--  BluetoothChat -->
     <string name="send">Send</string>
@@ -58,8 +61,7 @@
     <string name="button_scan">Scan for devices</string>
 
     <!-- Options Menu -->
-    <string name="secure_connect">Connect a device - Secure</string>
-    <string name="insecure_connect">Connect a device - Insecure</string>
-    <string name="discoverable">Make discoverable</string>
+    <string name="connect">Connect device!</string>
+    <string name="discoverable">Make discoverable!</string>
 
 </resources>

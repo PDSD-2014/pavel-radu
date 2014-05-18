@@ -3,18 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:gravity = "center"
     tools:context=".MainActivity" >
 
-    <TextView
-        android:id = "@+id/device_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/messaging"
@@ -22,15 +14,10 @@
         android:gravity="center"
         android:clickable="true"
         android:textColor="#469"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:onClick="goToMessageActivity" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#a0a0a0" />
-
-    <TextView
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/phone"
@@ -38,15 +25,10 @@
         android:gravity="center"
         android:clickable="true"
         android:textColor="#469"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:onClick="goToCallActivity" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#a0a0a0" />
-
-    <TextView
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/folder"
@@ -54,7 +36,7 @@
         android:gravity="center"
         android:clickable="true"
         android:textColor="#469"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:onClick="goToFileShareActivity" />
 
 </LinearLayout>

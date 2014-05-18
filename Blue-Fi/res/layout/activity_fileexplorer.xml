@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    
+		<EditText
+			android:hint="@string/Get_File_Name_From_SDCard"
+			android:id="@+id/editText" 
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight=".5"
+			android:ems="10"
+			android:inputType="text" />
+		
+		<Button android:text="@string/browse"
+			android:id="@+id/skipButton" 
+			android:textSize="18sp"
+			android:layout_width="0dp" 
+			android:layout_height="wrap_content" 
+			android:layout_weight=".5"
+        	android:textColor="#469"
+			android:onClick="getfile" />
+	          
+	</LinearLayout>
+	
+	<Button android:text="@string/send"
+		android:id="@+id/sendButton" 
+		android:textSize="18sp"
+		android:layout_marginTop="10dp"
+		android:layout_height="wrap_content" 
+		android:layout_width="match_parent" 
+        android:textColor="#469"
+		android:onClick="sendfile" >
+	</Button>
+	 
+	<Button android:text="@string/save"
+		android:id="@+id/saveButton" 
+		android:textSize="18sp"
+		android:layout_marginTop="10dp"
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content" 
+        android:textColor="#469"
+		android:onClick="savefile" >
+	</Button>
+         
+</LinearLayout>
