@@ -76,7 +76,7 @@ public class FileSender extends Activity{
 		    br.close();
 		}
 		catch (IOException e) {
-			Log.d( TAG, "IOException" );
+			Log.d( TAG, "IOException", e );
 		}
 		
     	Intent intent = new Intent();
@@ -109,9 +109,8 @@ public class FileSender extends Activity{
 			    br.close();
 			}
 			catch (IOException e) {
-				Log.d( TAG, "IOException" );
+				Log.d( TAG, "IOException", e );
 			}
-			Log.d( TAG, text.toString() );
 	        return text.toString();
     	}
     	else{

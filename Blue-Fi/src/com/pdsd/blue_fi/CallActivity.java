@@ -82,7 +82,7 @@ public class CallActivity extends Activity{
 	        try {
 		        player = new MediaPlayer();
 	            try{
-	            	player.setDataSource( playedFileName );
+	            	player.setDataSource( recordedFileName );
 	            }
 	            catch( Exception e ){
 	            	Log.d( TAG, "setDatasource() failed.", e );
@@ -173,7 +173,7 @@ public class CallActivity extends Activity{
 
         ( (TextView)findViewById( R.id.call_state ) ).setText( "Idle" );
         ( (TextView)findViewById( R.id.call_state2 ) ).setText( "Idle" );
-        
+
 	    // The Handler that gets information back from the BluetoothChatService
 	    handler = new Handler(){
 	        @Override
@@ -210,66 +210,64 @@ public class CallActivity extends Activity{
 	                String[] parts = readMessage.split( delimiter );
 	                if( parts.length < 2 )
 	                	Log.d( TAG, "parts.length < 2, it is " + parts.length + " " + parts[0] );
-	                else{
-	                	if( parts[0].equals( "call" ) ){
-	                		switch( parts[1] ){
-	                		case "update":
-	                			if( parts.length > 2 ){
-		                			content = new String( parts[2] );
-			                		for( int i = 3; i < parts.length; i += 1 )
-			                			content += delimiter + parts[i];
-		                			savefile( null );
-	                			}
-	                			break;
-	                		case "call":
-	                			receiveCall();
-	                			break;
-	                		case "end_call":
-	                	        ( (LinearLayout)findViewById( R.id.call_screen_layout ) ).setVisibility( View.VISIBLE );
-	                	        ( (LinearLayout)findViewById( R.id.answer_decline_layout ) ).setVisibility( View.GONE );
-	                	        ( (ImageView)findViewById( R.id.call_button ) ).setVisibility( View.VISIBLE );
-	                	        ( (ImageView)findViewById( R.id.end_call_button ) ).setVisibility( View.GONE );
-	                	        ( (ImageView)findViewById( R.id.end_calling_button ) ).setVisibility( View.GONE );
-	                	        ( (TextView)findViewById( R.id.call_state ) ).setText( "Idle" );
-	                	        ( (TextView)findViewById( R.id.call_state2 ) ).setText( "Idle" );
-	                	        startPlaying();
-	                	        if( timer != null )
-	                	        	timer.cancel();
-	                			break;
-	                		case "end_calling":
-	                	        ( (LinearLayout)findViewById( R.id.call_screen_layout ) ).setVisibility( View.VISIBLE );
-	                	        ( (LinearLayout)findViewById( R.id.answer_decline_layout ) ).setVisibility( View.GONE );
-	                	        ( (ImageView)findViewById( R.id.call_button ) ).setVisibility( View.VISIBLE );
-	                	        ( (ImageView)findViewById( R.id.end_call_button ) ).setVisibility( View.GONE );
-	                	        ( (ImageView)findViewById( R.id.end_calling_button ) ).setVisibility( View.GONE );
-	                	        ( (TextView)findViewById( R.id.call_state ) ).setText( "Idle" );
-	                	        ( (TextView)findViewById( R.id.call_state2 ) ).setText( "Idle" );
-	                	        stopRing();
-	                			break;
-	                		case "answer":
-	                	        ( (LinearLayout)findViewById( R.id.call_screen_layout ) ).setVisibility( View.VISIBLE );
-	                	        ( (LinearLayout)findViewById( R.id.answer_decline_layout ) ).setVisibility( View.GONE );
-	                	        ( (ImageView)findViewById( R.id.call_button ) ).setVisibility( View.GONE );
-	                	        ( (ImageView)findViewById( R.id.end_call_button ) ).setVisibility( View.VISIBLE );
-	                	        ( (ImageView)findViewById( R.id.end_calling_button ) ).setVisibility( View.GONE );
-	                	        ( (TextView)findViewById( R.id.call_state ) ).setText( "Connected." );
-	                	        ( (TextView)findViewById( R.id.call_state2 ) ).setText( "Connected." );
-	                	        startRecording();
-	                	        // startPlaying();
-	                			timer = new Timer();
-	                			timer.schedule( new Update(), 0, 5000 );
-	                			break;
-	                		case "decline":
-	                	        ( (LinearLayout)findViewById( R.id.call_screen_layout ) ).setVisibility( View.VISIBLE );
-	                	        ( (LinearLayout)findViewById( R.id.answer_decline_layout ) ).setVisibility( View.GONE );
-	                	        ( (ImageView)findViewById( R.id.call_button ) ).setVisibility( View.VISIBLE );
-	                	        ( (ImageView)findViewById( R.id.end_call_button ) ).setVisibility( View.GONE );
-	                	        ( (ImageView)findViewById( R.id.end_calling_button ) ).setVisibility( View.GONE );
-	                	        ( (TextView)findViewById( R.id.call_state ) ).setText( "Idle" );
-	                	        ( (TextView)findViewById( R.id.call_state2 ) ).setText( "Idle" );
-	                			break;
-	                		}
-	                	}
+	                else if( parts[0].equals( "call" ) ){
+                		switch( parts[1] ){
+                		case "update":
+                			if( parts.length > 2 ){
+	                			content = new String( parts[2] );
+		                		for( int i = 3; i < parts.length; i += 1 )
+		                			content += delimiter + parts[i];
+	                			savefile( null );
+                			}
+                			break;
+                		case "call":
+                			receiveCall();
+                			break;
+                		case "end_call":
+                	        ( (LinearLayout)findViewById( R.id.call_screen_layout ) ).setVisibility( View.VISIBLE );
+                	        ( (LinearLayout)findViewById( R.id.answer_decline_layout ) ).setVisibility( View.GONE );
+                	        ( (ImageView)findViewById( R.id.call_button ) ).setVisibility( View.VISIBLE );
+                	        ( (ImageView)findViewById( R.id.end_call_button ) ).setVisibility( View.GONE );
+                	        ( (ImageView)findViewById( R.id.end_calling_button ) ).setVisibility( View.GONE );
+                	        ( (TextView)findViewById( R.id.call_state ) ).setText( "Idle" );
+                	        ( (TextView)findViewById( R.id.call_state2 ) ).setText( "Idle" );
+                	        startPlaying();
+                	        // if( timer != null )
+                	        //	timer.cancel();
+                			break;
+                		case "end_calling":
+                	        ( (LinearLayout)findViewById( R.id.call_screen_layout ) ).setVisibility( View.VISIBLE );
+                	        ( (LinearLayout)findViewById( R.id.answer_decline_layout ) ).setVisibility( View.GONE );
+                	        ( (ImageView)findViewById( R.id.call_button ) ).setVisibility( View.VISIBLE );
+                	        ( (ImageView)findViewById( R.id.end_call_button ) ).setVisibility( View.GONE );
+                	        ( (ImageView)findViewById( R.id.end_calling_button ) ).setVisibility( View.GONE );
+                	        ( (TextView)findViewById( R.id.call_state ) ).setText( "Idle" );
+                	        ( (TextView)findViewById( R.id.call_state2 ) ).setText( "Idle" );
+                	        stopRing();
+                			break;
+                		case "answer":
+                	        ( (LinearLayout)findViewById( R.id.call_screen_layout ) ).setVisibility( View.VISIBLE );
+                	        ( (LinearLayout)findViewById( R.id.answer_decline_layout ) ).setVisibility( View.GONE );
+                	        ( (ImageView)findViewById( R.id.call_button ) ).setVisibility( View.GONE );
+                	        ( (ImageView)findViewById( R.id.end_call_button ) ).setVisibility( View.VISIBLE );
+                	        ( (ImageView)findViewById( R.id.end_calling_button ) ).setVisibility( View.GONE );
+                	        ( (TextView)findViewById( R.id.call_state ) ).setText( "Connected." );
+                	        ( (TextView)findViewById( R.id.call_state2 ) ).setText( "Connected." );
+                	        startRecording();
+                	        // startPlaying();
+                			// timer = new Timer();
+                			// timer.schedule( new Update(), 0, 5000 );
+                			break;
+                		case "decline":
+                	        ( (LinearLayout)findViewById( R.id.call_screen_layout ) ).setVisibility( View.VISIBLE );
+                	        ( (LinearLayout)findViewById( R.id.answer_decline_layout ) ).setVisibility( View.GONE );
+                	        ( (ImageView)findViewById( R.id.call_button ) ).setVisibility( View.VISIBLE );
+                	        ( (ImageView)findViewById( R.id.end_call_button ) ).setVisibility( View.GONE );
+                	        ( (ImageView)findViewById( R.id.end_calling_button ) ).setVisibility( View.GONE );
+                	        ( (TextView)findViewById( R.id.call_state ) ).setText( "Idle" );
+                	        ( (TextView)findViewById( R.id.call_state2 ) ).setText( "Idle" );
+                			break;
+                		}
 	                }
 	                break;
 	            case BluetoothChatService.MESSAGE_DEVICE_NAME:
@@ -306,7 +304,7 @@ public class CallActivity extends Activity{
 	}
 	
 	public void sendfile(){ 
-        Log.d( TAG, "sendfile()" );
+        // Log.d( TAG, "sendfile()" );
     	content = FileSender.async( recordedFileName );
 		sendMessage( "call" + delimiter + "update" + delimiter + content );
     }
@@ -316,7 +314,7 @@ public class CallActivity extends Activity{
     	Intent intent1 = new Intent( this, SaveToSDCard.class );//somesave activity
     	Bundle b = new Bundle();
     	b.putString( "content", content );
-    	b.putString( "filepath", playedFileName );
+    	b.putString( "filepath", recordedFileName );
     	//put into your intent
     	intent1.putExtras( b );
         startActivity( intent1 );
@@ -392,8 +390,14 @@ public class CallActivity extends Activity{
     	}
     }
 
+    public int min( int a, int b ){
+    	if( a < b )
+    		return a;
+    	return b;
+    }
+    
     public int sendMessage(String message) {
-        Log.d( TAG, "sendMessage()" );
+        Log.d( TAG, "sendMessage( " + message.substring( 0, min( message.length(), 30 ) ) + " )" );
         // Check that we're actually connected before trying anything
         if( chatService.getState() != BluetoothChatService.STATE_CONNECTED ){
             return NOT_CONNECTED;
@@ -436,8 +440,8 @@ public class CallActivity extends Activity{
 	        stopRing();
 		    startRecording();
 		    //startPlaying();
-			timer = new Timer();
-			timer.schedule( new Update(), 0, 5000 );
+			// timer = new Timer();
+			// timer.schedule( new Update(), 0, 5000 );
         }
 	}
 	
@@ -494,8 +498,8 @@ public class CallActivity extends Activity{
 	        stopRecording();
 	        startPlaying();
 		    //stopPlaying();
-	        if( timer != null )
-	        	timer.cancel();
+	        // if( timer != null )
+	        //	timer.cancel();
         }
 	}
 }
