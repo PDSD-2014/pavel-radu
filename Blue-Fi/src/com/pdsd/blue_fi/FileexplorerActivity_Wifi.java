@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 
 @SuppressLint("HandlerLeak")
-public class FileexplorerActivity extends Activity {
+public class FileexplorerActivity_Wifi extends Activity {
 	
 	// Debugging.
 	static final String TAG = "FileexplorerActivity";

@@ -1,6 +1,5 @@
 package com.pdsd.blue_fi;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -8,11 +7,9 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
 
 public class SaveToSDCard extends Activity {
 	

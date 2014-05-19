@@ -47,7 +47,8 @@ public class MessageActivity extends Activity{
 	String address, name, connectedDeviceName;
     StringBuffer outStringBuffer;
     Database db;
-
+    AddressType addressType;
+    
     // Intent request codes
     public static final int REQUEST_CONNECT_DEVICE = 1;
 
@@ -61,6 +62,7 @@ public class MessageActivity extends Activity{
 		if( extras != null ){
 		    name = extras.getString( MainActivity.DEVICE_NAME );
 		    address = extras.getString( MainActivity.DEVICE_ADDRESS );
+		    addressType = DeviceActivity.AddressType.getAddressType( address );
 		}
 		
 		outEditText = (EditText) findViewById( R.id.edit_text_out );
@@ -137,7 +139,7 @@ public class MessageActivity extends Activity{
         // Initialize the BluetoothChatService to perform bluetooth connections
         chatService = new BluetoothChatService( this, handler );
         
-		switch( AddressType.getAddressType( address ) ){
+		switch( addressType ){
 		case Bluetooth:
 			bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 			if( bluetoothAdapter == null ) {
@@ -152,6 +154,8 @@ public class MessageActivity extends Activity{
 				connectDevice();
 			}
 			setTitle( name );
+			break;
+		case UdpBroadcast:
 			break;
 		case Wifi:
 			break;

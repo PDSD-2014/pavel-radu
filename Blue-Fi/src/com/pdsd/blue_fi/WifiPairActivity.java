@@ -1,8 +1,11 @@
 package com.pdsd.blue_fi;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.net.DhcpInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -30,6 +33,8 @@ public class WifiPairActivity extends Activity{
 
     // Debugging
     static final String TAG = "WifiPairActivity";
+    
+    static final String BROADCAST_ADDRESS = "com.pdsd.blue_fi.broadcastAddress";
 
 	// Global variables.
 	boolean isWifiP2pEnabled, p2p_unsupported;
@@ -48,6 +53,7 @@ public class WifiPairActivity extends Activity{
     WifiReceiver receiverWifi;
     List<ScanResult> wifiList;
     StringBuilder sb = new StringBuilder();
+    InetAddress broadcastAddress;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +77,19 @@ public class WifiPairActivity extends Activity{
         pairedListView.setAdapter( pairedDevicesAdapter );
         pairedListView.setOnItemClickListener(mDeviceClickListener);
 
-    	String noDevices = getResources().getText( R.string.none_paired ).toString();
-    	pairedDevicesAdapter.add( noDevices );
+    	// String noDevices = getResources().getText( R.string.none_paired ).toString();
+    	// pairedDevicesAdapter.add( noDevices );
+        pairedDevicesAdapter.add( "Click here for broadcast UDP!" );
 
         pairedDevicesAdapter.add( null ); // This right here is a line break.
+
+        try{
+        	broadcastAddress = getBroadcastAddress();
+    		Log.d( TAG, getBroadcastAddress().toString() );
+        }
+        catch( IOException e ){
+        	Log.d( TAG, "IOException", e );
+        }
         
 	    scanButton.setOnClickListener( new OnClickListener(){
             public void onClick( View v ){
@@ -86,29 +101,23 @@ public class WifiPairActivity extends Activity{
     
     @Override
     public void onResume() {
-    	registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+    	//registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         super.onResume();
     }
 
     @Override
     public void onPause() {
-    	unregisterReceiver(receiverWifi);
+    	//unregisterReceiver(receiverWifi);
         super.onPause();
     }
     
     private OnItemClickListener mDeviceClickListener = new OnItemClickListener() {
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
             Log.d( TAG, "onItemClick()" );
-            // Cancel discovery because it's costly and we're about to connect
-        	//bluetoothAdapter.cancelDiscovery();
-
-            // Get the device MAC address, which is the last 17 chars in the View
-            String info = ((TextView) v).getText().toString();
-            String address = info.substring(info.length() - 17);
 
             // Create the result Intent and include the MAC address
             Intent intent = new Intent();
-            intent.putExtra( MainActivity.DEVICE_ADDRESS, address );
+            intent.putExtra( BROADCAST_ADDRESS, broadcastAddress.toString() );
 
             // Set result and finish this Activity
             setResult(Activity.RESULT_OK, intent);
@@ -118,7 +127,7 @@ public class WifiPairActivity extends Activity{
 
 	public void goToDeviceActivity( View view ){
         Log.d( TAG, "goToDeviceActivity()" );
-		Intent intent = new Intent( this, DeviceActivity.class );
+		Intent intent = new Intent( this, DeviceActivity_Wifi.class );
 		intent.putExtra( MainActivity.DEVICE_ADDRESS, ((TextView)view).getText() );
 		startActivity( intent );
 	}
@@ -132,7 +141,6 @@ public class WifiPairActivity extends Activity{
     	Log.d( TAG, "doDiscovery()" );
         
         Toast.makeText( this, "Scanning...", Toast.LENGTH_SHORT ).show();
-
     	mainWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         receiverWifi = new WifiReceiver();
         registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
@@ -141,11 +149,22 @@ public class WifiPairActivity extends Activity{
         Toast.makeText( this, "Scan complete", Toast.LENGTH_SHORT ).show();
 
     }
+	
+	InetAddress getBroadcastAddress() throws IOException {
+	    WifiManager wifi = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+	    DhcpInfo dhcp = wifi.getDhcpInfo();
+	    // handle null somehow
+	 
+	    int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+	    byte[] quads = new byte[4];
+	    for (int k = 0; k < 4; k++)
+	      quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+	    return InetAddress.getByAddress(quads);
+	}
     
     class WifiReceiver extends BroadcastReceiver {
     	
     	public String parse( String result ){
-    		Log.d( TAG, "parse( " + result + " )" );
     		
     		String string, aux;
     		String[] parts;
@@ -173,11 +192,12 @@ public class WifiPairActivity extends Activity{
     		aux = parts[3].split( ":" )[1];
     		aux = aux.substring( 1, aux.length() );
     		string += "\nSignal strength: " + aux + "db";
-    		
+    			
     		return string;
     	}
-    	
+
         public void onReceive(Context c, Intent intent) {
+
         	if( emptyList ){
 	            wifiList = mainWifi.getScanResults();
 	            for(int i = 0; i < wifiList.size(); i++){

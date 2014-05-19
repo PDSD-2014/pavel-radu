@@ -18,9 +18,10 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
 
     <uses-feature
         android:name="android.hardware.wifi.direct"
@@ -69,28 +70,35 @@
             android:label="@string/title_activity_file_share" >
         </activity>
         <activity
-            android:name="com.pdsd.blue_fi.FileexplorerActivity"
-            >
+            android:name="com.pdsd.blue_fi.MessageActivity_Wifi"
+            android:label="@string/title_activity_message" >
         </activity>
         <activity
-            android:name="com.pdsd.blue_fi.FileArrayAdapter"
-           >
+            android:name="com.pdsd.blue_fi.CallActivity_Wifi"
+            android:label="@string/title_activity_call" >
         </activity>
         <activity
-            android:name="com.pdsd.blue_fi.FileChooser"
-            >
+            android:name="com.pdsd.blue_fi.FileShareActivity_Wifi"
+            android:label="@string/title_activity_file_share" >
         </activity>
         <activity
-            android:name="com.pdsd.blue_fi.Item"
-             >
+            android:name="com.pdsd.blue_fi.DeviceActivity_Wifi"
+            android:label="@string/title_activity_device" >
+        </activity>
+        <activity android:name="com.pdsd.blue_fi.FileexplorerActivity" >
+        </activity>
+        <activity android:name="com.pdsd.blue_fi.FileArrayAdapter" >
+        </activity>
+        <activity android:name="com.pdsd.blue_fi.FileChooser" >
+        </activity>
+        <activity android:name="com.pdsd.blue_fi.Item" >
+        </activity>
+        <activity android:name="com.pdsd.blue_fi.FileSender" >
+        </activity>
+        <activity android:name="com.pdsd.blue_fi.SaveToSDCard" >
         </activity>
         <activity
-            android:name="com.pdsd.blue_fi.FileSender"
-             >
-        </activity>
-        <activity
-            android:name="com.pdsd.blue_fi.SaveToSDCard"
-             >
+            android:name="com.pdsd.blue_fi.PlaceChooser" >
         </activity>
     </application>
 

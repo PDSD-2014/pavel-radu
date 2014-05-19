@@ -10,7 +10,7 @@ import android.view.View;
 
 // This is the detailed Bluetooth activity of a certain device.
 
-public class DeviceActivity extends Activity {
+public class DeviceActivity_Wifi extends Activity {
 
     // Debugging
     static final String TAG = "DeviceActivity";
@@ -64,7 +64,7 @@ public class DeviceActivity extends Activity {
 	
 	public void goToCallActivity( View view ){
         Log.d( TAG, "goToCallActivity()" );
-		Intent intent = new Intent( this, CallActivity.class );
+		Intent intent = new Intent( this, CallActivity_Wifi.class );
 		intent.putExtra( MainActivity.DEVICE_NAME, name );
 		intent.putExtra( MainActivity.DEVICE_ADDRESS, address );
 		intent.putExtra( WifiPairActivity.BROADCAST_ADDRESS, broadcastAddress );
@@ -73,17 +73,19 @@ public class DeviceActivity extends Activity {
 
 	public void goToFileShareActivity( View view ){
         Log.d( TAG, "goToFileShareActivity()" );
-		Intent intent = new Intent( this, FileexplorerActivity.class );
+		Intent intent = new Intent( this, FileexplorerActivity_Wifi.class );
 		intent.putExtra( MainActivity.DEVICE_NAME, name );
 		intent.putExtra( MainActivity.DEVICE_ADDRESS, address );
+		intent.putExtra( WifiPairActivity.BROADCAST_ADDRESS, broadcastAddress );
 		startActivity( intent );
 	}
 
 	public void goToMessageActivity( View view ){
         Log.d( TAG, "goToMessageActivity()" );
-		Intent intent = new Intent( this, MessageActivity.class );
+		Intent intent = new Intent( this, MessageActivity_Wifi.class );
 		intent.putExtra( MainActivity.DEVICE_NAME, name );
 		intent.putExtra( MainActivity.DEVICE_ADDRESS, address );
+		intent.putExtra( WifiPairActivity.BROADCAST_ADDRESS, broadcastAddress );
 		startActivity( intent );
 	}
 	

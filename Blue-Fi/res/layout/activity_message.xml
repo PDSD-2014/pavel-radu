@@ -21,12 +21,12 @@
         android:layout_alignParentBottom="true"
         android:background="#f3f3f3" >
 
-        <EditText android:id="@+id/edit_text_out"
+        <EditText
+            android:id="@+id/edit_text_out"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".7"
             android:layout_gravity="bottom"
-            android:textAllCaps="true"
+            android:layout_weight=".7"
             android:inputType="text" />
         
         <Button android:id="@+id/button_send"

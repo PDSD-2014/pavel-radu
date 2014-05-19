@@ -5,7 +5,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.pdsd.blue_fi.BluetoothChatService;
-import com.pdsd.blue_fi.DeviceActivity.AddressType;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -13,8 +12,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -32,7 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint({ "NewApi", "HandlerLeak" })
-public class CallActivity extends Activity{
+public class CallActivity_Wifi extends Activity{
 	
 	// Debugging.
 	static final String TAG = "CallActivity";
@@ -50,9 +47,6 @@ public class CallActivity extends Activity{
     MediaPlayer player, ringRing;
     String recordedFileName, playedFileName, delimiter, content;
     Timer timer;
-    AddressType addressType;
-    AssetManager asset;
-    AssetFileDescriptor playedAfd, recordedAfd;
 
     // Intent request codes
     public static final int REQUEST_CONNECT_DEVICE = 1;
@@ -62,11 +56,9 @@ public class CallActivity extends Activity{
     
     void ring(){
         Log.d( TAG, "ring()" );
-        if( ringRing == null || !ringRing.isPlaying() ){
-		    ringRing = MediaPlayer.create( this, R.raw.ringtone );
-		    ringRing.setLooping( true );
-		    ringRing.start();
-        }
+	    ringRing = MediaPlayer.create( this, R.raw.ringtone );
+	    ringRing.setLooping( true );
+	    ringRing.start();
     }
     void stopRing(){
         Log.d( TAG, "stopRing()" );
@@ -78,21 +70,16 @@ public class CallActivity extends Activity{
     
     void startPlaying() {
         Log.d( TAG, "startPlaying()" );
-        if( player == null || !player.isPlaying() ){
+        if( !player.isPlaying() ){
+	        player = new MediaPlayer();
 	        try {
-		        player = new MediaPlayer();
-	            try{
-	            	player.setDataSource( playedFileName );
-	            }
-	            catch( Exception e ){
-	            	Log.d( TAG, "setDatasource() failed.", e );
-	            }
-	           	player.setDisplay( null );
 	        	player.setLooping( true );
+	            player.setDataSource( playedFileName );
+	            player.setDisplay( null );
 	            player.prepare();
 	            player.start();
-	        } catch( Exception e ){
-	            Log.d( TAG, "prepare() failed", e );
+	        } catch( IOException e ){
+	            Log.d( TAG, "prepare() failed" );
 	        }
         }
     }
@@ -147,8 +134,6 @@ public class CallActivity extends Activity{
 		if( extras != null ){
 		    name = extras.getString( MainActivity.DEVICE_NAME );
 		    address = extras.getString( MainActivity.DEVICE_ADDRESS );
-	        addressType = DeviceActivity.AddressType.getAddressType( address );
-	        setTitle( name );
 		}
 
         player = new MediaPlayer();
@@ -232,9 +217,6 @@ public class CallActivity extends Activity{
 	                	        ( (ImageView)findViewById( R.id.end_calling_button ) ).setVisibility( View.GONE );
 	                	        ( (TextView)findViewById( R.id.call_state ) ).setText( "Idle" );
 	                	        ( (TextView)findViewById( R.id.call_state2 ) ).setText( "Idle" );
-	                	        startPlaying();
-	                	        if( timer != null )
-	                	        	timer.cancel();
 	                			break;
 	                		case "end_calling":
 	                	        ( (LinearLayout)findViewById( R.id.call_screen_layout ) ).setVisibility( View.VISIBLE );
@@ -255,9 +237,9 @@ public class CallActivity extends Activity{
 	                	        ( (TextView)findViewById( R.id.call_state ) ).setText( "Connected." );
 	                	        ( (TextView)findViewById( R.id.call_state2 ) ).setText( "Connected." );
 	                	        startRecording();
-	                	        // startPlaying();
-	                			timer = new Timer();
-	                			timer.schedule( new Update(), 0, 5000 );
+	                	        startPlaying();
+	                			// timer = new Timer();
+	                			// timer.schedule( new Update(), 0, 1000 );
 	                			break;
 	                		case "decline":
 	                	        ( (LinearLayout)findViewById( R.id.call_screen_layout ) ).setVisibility( View.VISIBLE );
@@ -286,22 +268,6 @@ public class CallActivity extends Activity{
 	    
         // Initialize the BluetoothChatService to perform bluetooth connections
         chatService = new BluetoothChatService( this, handler );
-        
-		if( addressType == AddressType.Bluetooth ){
-			bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-			if( bluetoothAdapter == null ) {
-			    // Device does not support Bluetooth.
-				Toast.makeText( getApplicationContext(), R.string.bluetooth_not_supported, Toast.LENGTH_LONG ).show();
-			}
-			else{
-				// Bluetooth is supported.
-				// Toast.makeText( getApplicationContext(), R.string.bluetooth_supported, Toast.LENGTH_SHORT ).show();
-				if( !bluetoothAdapter.isEnabled() ){
-					bluetoothAdapter.enable();
-				}
-				connectDevice();
-			}
-		}
 
 	}
 	
@@ -435,9 +401,9 @@ public class CallActivity extends Activity{
 	        ( (TextView)findViewById( R.id.call_state2 ) ).setText( "Connected." );
 	        stopRing();
 		    startRecording();
-		    //startPlaying();
-			timer = new Timer();
-			timer.schedule( new Update(), 0, 5000 );
+		    startPlaying();
+			// timer = new Timer();
+			// timer.schedule( new Update(), 0, 1000 );
         }
 	}
 	
@@ -492,10 +458,7 @@ public class CallActivity extends Activity{
 	        ( (TextView)findViewById( R.id.call_state ) ).setText( "Idle" );
 	        ( (TextView)findViewById( R.id.call_state2 ) ).setText( "Idle" );
 	        stopRecording();
-	        startPlaying();
 		    //stopPlaying();
-	        if( timer != null )
-	        	timer.cancel();
         }
 	}
 }
